@@ -27,20 +27,26 @@
 <script>
 const canvas = document.getElementById('space');
 const ctx = canvas.getContext('2d');
+  
 let w, h;
-function resize() {
+// --- Initiera canvas första gången ---
+function resizeInitial() {
   w = canvas.width = window.innerWidth;
   h = canvas.height = window.innerHeight;
 }
-window.addEventListener('resize', resize);
-resize();
+resizeInitial();
 
-// Tre lager stjärnor
+// --- Spara gamla mått efter första init ---
+let oldW = w;
+let oldH = h;
+
+// --- Tre lager stjärnor ---
 const layers = [
   { count: 100, color: '#f2d675', speed: 0.1, size: 1 },
-  { count: 80, color: '#d8c27a', speed: 0.5, size: 1.5 },
-  { count: 60, color: '#fff2b0', speed: 2.5, size: 2 }
+  { count: 80,  color: '#d8c27a', speed: 0.5, size: 1.5 },
+  { count: 60,  color: '#fff2b0', speed: 2.5, size: 2 }
 ];
+
 for (const layer of layers) {
   layer.stars = Array.from({length: layer.count}, () => ({
     x: Math.random() * w,
@@ -48,6 +54,31 @@ for (const layer of layers) {
   }));
 }
 
+// --- Korrekt resize med skalning ---
+function resize() {
+  // Spara gamla mått
+  oldW = w;
+  oldH = h;
+
+  // Sätt nya mått
+  w = canvas.width = window.innerWidth;
+  h = canvas.height = window.innerHeight;
+
+  // Skalningsfaktorer
+  const scaleX = w / oldW;
+  const scaleY = h / oldH;
+
+  // Skala stjärnor proportionellt
+  for (const layer of layers) {
+    for (const s of layer.stars) {
+      s.x *= scaleX;
+      s.y *= scaleY;
+    }
+  }
+}
+
+window.addEventListener('resize', resize);
+  
 // Sinus-scroll för namn
 const text = "Stefan Anderson";
 let textX = w;
