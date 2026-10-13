@@ -117,22 +117,19 @@ function draw() {
   requestAnimationFrame(draw);
 }
 draw();
-canvas.addEventListener('click', () => {
-  window.location.href = 'https://github.com/stefan-anderson';
-});
-
+  
 const audio = document.getElementById('bgAudio');
 audio.play();
 let pressTimer;
 
 // --- Desktop ---
-canvas.addEventListener('click', () => window.location.href = 'https://github.com/stefan-anderson');
+canvas.addEventListener('click', () => window.location.href = 'https://github.com/teleogenic');
 canvas.addEventListener('contextmenu', e => { e.preventDefault(); toggle(); });
 
 // --- Mobil ---
 canvas.addEventListener('touchstart', () => {
   pressTimer = setTimeout(() => {
-    window.location.href = 'https://github.com/stefan-anderson';
+    window.location.href = 'https://github.com/teleogenic';
   }, 500);
 });
 canvas.addEventListener('touchend', e => {
