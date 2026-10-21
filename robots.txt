@@ -1,4 +1,4 @@
 User-agent: *
-Allow: /
+Allow: /Free-Will-Webproject/
 
 Sitemap: https://teleogenic.github.io/sitemap.xml
