@@ -1,4 +1,3 @@
 User-agent: *
 Allow: /
-
 Sitemap: https://teleogenic.github.io/sitemap.xml
