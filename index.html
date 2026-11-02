@@ -4,175 +4,263 @@
 <meta charset="UTF-8">
 <title>Stefan Anderson</title>
 <meta name="description" content="Stefan Anderson GitHub Page">
-<link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet">
+
+<link
+href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap"
+rel="stylesheet">
+
 <style>
-  body {
-    margin: 0;
-    background: #000;
-    overflow: hidden;
-  }
-  canvas {
-    display: block;
-    cursor: pointer;
-  }
+body{
+    margin:0;
+    background:#000;
+    overflow:hidden;
+}
+
+canvas{
+    display:block;
+    cursor:pointer;
+}
 </style>
 </head>
+
 <body>
-<h1 style="position:absolute; left:-9999px;">
-  Stefan Anderson
+
+<h1 style="position:absolute;left:-9999px;">
+Stefan Anderson
 </h1>
-<audio id="bgAudio" src="sound.wav" loop></audio> 
+
+<audio id="bgAudio" src="sound.wav" loop></audio>
+
 <canvas id="space"></canvas>
+
 <script>
-const canvas = document.getElementById('space');
-const ctx = canvas.getContext('2d');
-  
-let w, h;
-// --- Initiera canvas första gången ---
-function resizeInitial() {
-  w = canvas.width = window.innerWidth;
-  h = canvas.height = window.innerHeight;
+
+const canvas = document.getElementById("space");
+const ctx = canvas.getContext("2d");
+
+let w,h;
+
+function resizeInitial(){
+    w = canvas.width = window.innerWidth;
+    h = canvas.height = window.innerHeight;
 }
 resizeInitial();
 
-const logoText = "TELEOGENIC";
-  
-// --- Rita logga ---
-function drawLogo() {
-  ctx.save();
-
-  ctx.font = "bold 72px Audiowide";
-
-  const grad = ctx.createLinearGradient(0, 0, 0, 80);
-  grad.addColorStop(0, "#fff7c8");
-  grad.addColorStop(0.5, "#f2d675");
-  grad.addColorStop(1, "#b08c3b");
-
-  ctx.fillStyle = grad;
-  ctx.shadowColor = "#f2d675";
-  ctx.shadowBlur = 20;
-
-  const startX = w / 2 - (logoText.length * 24);
-
-  for (let i = 0; i < logoText.length; i++) {
-    const x = startX + i * 48;
-    const y = 85 + Math.sin(Date.now() * 0.003 + i * 0.5) * 12;
-
-    ctx.fillText(logoText[i], x, y);
-  }
-
-  ctx.restore();
-}
-
-// --- Spara gamla mått efter första init ---
 let oldW = w;
 let oldH = h;
 
-// --- Tre lager stjärnor ---
-const layers = [
-  { count: 100, color: '#f2d675', speed: 0.1, size: 1 },
-  { count: 80,  color: '#d8c27a', speed: 0.5, size: 1.5 },
-  { count: 60,  color: '#fff2b0', speed: 2.5, size: 2 }
-];
-
-for (const layer of layers) {
-  layer.stars = Array.from({length: layer.count}, () => ({
-    x: Math.random() * w,
-    y: Math.random() * h
-  }));
-}
-
-// --- Korrekt resize med skalning ---
-function resize() {
-  // Spara gamla mått
-  oldW = w;
-  oldH = h;
-
-  // Sätt nya mått
-  w = canvas.width = window.innerWidth;
-  h = canvas.height = window.innerHeight;
-
-  // Skalningsfaktorer
-  const scaleX = w / oldW;
-  const scaleY = h / oldH;
-
-  // Skala stjärnor proportionellt
-  for (const layer of layers) {
-    for (const s of layer.stars) {
-      s.x *= scaleX;
-      s.y *= scaleY;
-    }
-  }
-}
-
-window.addEventListener('resize', resize);
-  
-// Sinus-scroll för namn
+const logoText = "TELEOGENIC";
 const text = "Stefan Anderson";
+
 let textX = w;
+
 const amplitude = 150;
 const frequency = 0.01;
 const textSpeed = 4;
 
-function draw() {
-  ctx.fillStyle = '#000';
-  ctx.fillRect(0, 0, w, h);
+const layers = [
+    {count:100,color:"#f2d675",speed:0.1,size:1},
+    {count:80,color:"#d8c27a",speed:0.5,size:1.5},
+    {count:60,color:"#fff2b0",speed:2.5,size:2}
+];
 
-  // Rita stjärnor
-  for (const layer of layers) {
-    ctx.fillStyle = layer.color;
-    for (const s of layer.stars) {
-      s.x -= layer.speed;
-      if (s.x < 0) s.x = w;
-      ctx.beginPath();
-      ctx.arc(s.x, s.y, layer.size, 0, Math.PI * 2);
-      ctx.fill();
-    }
-    drawLogo();
-  }
-
-  // Rita namn ovanpå
-  ctx.font = "70px Audiowide";
-  ctx.fillStyle = "#f2d675";
-  for (let i = 0; i < text.length; i++) {
-    const char = text[i];
-    const charX = textX + i * 40;
-    const charY = h / 2 + Math.sin(charX * frequency) * amplitude;
-    ctx.fillText(char, charX, charY);
-  }
-  textX -= textSpeed;
-  const textWidth = ctx.measureText(text).width;
-  if (textX + textWidth < -20) textX = w + 20;
-  requestAnimationFrame(draw);
+for(const layer of layers){
+    layer.stars = Array.from(
+        {length:layer.count},
+        () => ({
+            x:Math.random()*w,
+            y:Math.random()*h
+        })
+    );
 }
+
+function resize(){
+
+    oldW = w;
+    oldH = h;
+
+    w = canvas.width = window.innerWidth;
+    h = canvas.height = window.innerHeight;
+
+    const scaleX = w / oldW;
+    const scaleY = h / oldH;
+
+    for(const layer of layers){
+        for(const s of layer.stars){
+            s.x *= scaleX;
+            s.y *= scaleY;
+        }
+    }
+}
+
+window.addEventListener("resize", resize);
+
+function drawLogo(){
+
+    ctx.save();
+
+    ctx.font = "bold 72px Audiowide";
+
+    const grad = ctx.createLinearGradient(0,0,0,90);
+
+    grad.addColorStop(0,"#fffef0");
+    grad.addColorStop(0.4,"#fff0a0");
+    grad.addColorStop(1,"#b08c3b");
+
+    ctx.fillStyle = grad;
+
+    ctx.shadowColor = "#ffd700";
+    ctx.shadowBlur = 30;
+
+    const startX = w/2 - logoText.length*24;
+
+    for(let i=0;i<logoText.length;i++){
+
+        const x = startX + i*48;
+
+        const y =
+            80 +
+            Math.sin(
+                Date.now()*0.004 +
+                i*0.6
+            ) * 12;
+
+        ctx.fillText(
+            logoText[i],
+            x,
+            y
+        );
+    }
+
+    ctx.restore();
+}
+
+function draw(){
+
+    ctx.fillStyle="#000";
+    ctx.fillRect(0,0,w,h);
+
+    // stjärnor
+    for(const layer of layers){
+
+        ctx.fillStyle = layer.color;
+
+        for(const s of layer.stars){
+
+            s.x -= layer.speed;
+
+            if(s.x < 0){
+                s.x = w;
+                s.y = Math.random()*h;
+            }
+
+            ctx.beginPath();
+            ctx.arc(
+                s.x,
+                s.y,
+                layer.size,
+                0,
+                Math.PI*2
+            );
+            ctx.fill();
+        }
+    }
+
+    drawLogo();
+
+    // Stefan Anderson
+    ctx.font = "70px Audiowide";
+    ctx.fillStyle = "#f2d675";
+
+    for(let i=0;i<text.length;i++){
+
+        const char = text[i];
+
+        const charX =
+            textX +
+            i*40;
+
+        const charY =
+            h/2 +
+            Math.sin(
+                charX*frequency
+            )*amplitude;
+
+        ctx.fillText(
+            char,
+            charX,
+            charY
+        );
+    }
+
+    textX -= textSpeed;
+
+    const textWidth =
+        ctx.measureText(text).width;
+
+    if(textX + textWidth < -50){
+        textX = w + 50;
+    }
+
+    requestAnimationFrame(draw);
+}
+
 draw();
-  
-const audio = document.getElementById('bgAudio');
-audio.play();
+
+const audio =
+document.getElementById("bgAudio");
+
+audio.play().catch(()=>{});
+
+function toggle(){
+
+    if(audio.paused){
+        audio.play();
+    }else{
+        audio.pause();
+    }
+}
+
 let pressTimer;
 
-// --- Desktop ---
-canvas.addEventListener('click', () => window.location.href = 'https://github.com/teleogenic');
-canvas.addEventListener('contextmenu', e => { e.preventDefault(); toggle(); });
+// Desktop
 
-// --- Mobil ---
-canvas.addEventListener('touchstart', () => {
-  pressTimer = setTimeout(() => {
-    window.location.href = 'https://github.com/teleogenic';
-  }, 500);
-});
-canvas.addEventListener('touchend', e => {
-  e.preventDefault();
-  clearTimeout(pressTimer);
-  toggle();
+canvas.addEventListener("click", () => {
+    window.location.href =
+    "https://github.com/teleogenic";
 });
 
-function toggle() {
-  if (audio.paused) audio.play();
-  else audio.pause();
-}
+canvas.addEventListener(
+    "contextmenu",
+    (e)=>{
+        e.preventDefault();
+        toggle();
+    }
+);
+
+// Mobil
+
+canvas.addEventListener(
+    "touchstart",
+    ()=>{
+        pressTimer =
+        setTimeout(()=>{
+            window.location.href =
+            "https://github.com/teleogenic";
+        },500);
+    }
+);
+
+canvas.addEventListener(
+    "touchend",
+    (e)=>{
+        e.preventDefault();
+        clearTimeout(pressTimer);
+        toggle();
+    }
+);
 
 </script>
+
 </body>
 </html>
-
