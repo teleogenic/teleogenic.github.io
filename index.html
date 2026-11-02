@@ -35,6 +35,33 @@ function resizeInitial() {
 }
 resizeInitial();
 
+// --- Rita logga ---
+function drawLogo() {
+  ctx.save();
+
+  ctx.font = "bold 72px Audiowide";
+
+  const grad = ctx.createLinearGradient(0, 0, 0, 80);
+  grad.addColorStop(0, "#fff7c8");
+  grad.addColorStop(0.5, "#f2d675");
+  grad.addColorStop(1, "#b08c3b");
+
+  ctx.fillStyle = grad;
+  ctx.shadowColor = "#f2d675";
+  ctx.shadowBlur = 20;
+
+  const startX = w / 2 - (logoText.length * 24);
+
+  for (let i = 0; i < logoText.length; i++) {
+    const x = startX + i * 48;
+    const y = 85 + Math.sin(Date.now() * 0.003 + i * 0.5) * 12;
+
+    ctx.fillText(logoText[i], x, y);
+  }
+
+  ctx.restore();
+}
+
 // --- Spara gamla mått efter första init ---
 let oldW = w;
 let oldH = h;
@@ -115,6 +142,7 @@ function draw() {
   if (textX + textWidth < -20) textX = w + 20;
   requestAnimationFrame(draw);
 }
+drawLogo();
 draw();
   
 const audio = document.getElementById('bgAudio');
