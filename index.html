@@ -35,6 +35,8 @@ function resizeInitial() {
 }
 resizeInitial();
 
+const logoText = "TELEOGENIC";
+  
 // --- Rita logga ---
 function drawLogo() {
   ctx.save();
@@ -126,6 +128,7 @@ function draw() {
       ctx.arc(s.x, s.y, layer.size, 0, Math.PI * 2);
       ctx.fill();
     }
+    drawLogo();
   }
 
   // Rita namn ovanpå
@@ -142,7 +145,6 @@ function draw() {
   if (textX + textWidth < -20) textX = w + 20;
   requestAnimationFrame(draw);
 }
-drawLogo();
 draw();
   
 const audio = document.getElementById('bgAudio');
